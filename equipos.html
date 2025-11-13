@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipos Médicos - Tecnología en Ingeniería Biomédica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'biomedica-blue': '#1e3a8a',
+                        'biomedica-cyan': '#0891b2',
+                        'biomedica-green': '#059669',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0891b2 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .equipment-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 0.75rem 0.75rem 0 0;
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0891b2 100%);
+            color: white;
+        }
+        .mobile-menu-open {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Header -->
+    <section class="gradient-bg text-white">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="logo-tebi-new.png" alt="Tecnología de Ingeniería Biomédica" class="h-16 md:h-20 drop-shadow-lg filter brightness-110 hover:scale-105 transition-transform duration-300 rounded-lg">
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="hover:text-gray-200">← Inicio</a>
+                    <a href="#cbet" class="hover:text-gray-200">Equipo Médico</a>
+                    <a href="#cles" class="hover:text-gray-200">Lab Clínico</a>
+                    <a href="#cres" class="hover:text-gray-200">Imaginería</a>
+                </div>
+                
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-white focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path id="menu-icon-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                            <path id="menu-icon-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div id="mobile-menu" class="hidden md:hidden absolute top-0 left-0 w-full h-screen bg-biomedica-blue z-50">
+            <div class="flex flex-col items-center justify-center h-full space-y-8">
+                <a href="index.html" class="text-3xl font-bold text-white hover:text-cyan-300 mobile-menu-link">← Inicio</a>
+                <a href="#cbet" class="text-3xl font-bold text-white hover:text-cyan-300 mobile-menu-link">Equipo Médico</a>
+                <a href="#cles" class="text-3xl font-bold text-white hover:text-cyan-300 mobile-menu-link">Lab Clínico</a>
+                <a href="#cres" class="text-3xl font-bold text-white hover:text-cyan-300 mobile-menu-link">Imaginería</a>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-6 py-16 md:py-24">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                    Equipos Médicos<br/>
+                    <span class="text-cyan-300">Tecnología Biomédica</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-4 text-gray-100">
+                    Conoce los equipos que mantendrás y repararás
+                </p>
+                <p class="text-lg text-gray-200 max-w-3xl mx-auto">
+                    Explora los equipos médicos esenciales en las tres áreas de especialización: 
+                    Equipo Médico General, Laboratorio Clínico e Imaginería Médica
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs de Especialidades -->
+    <section class="bg-white py-8 shadow-md sticky top-0 z-40">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button onclick="showTab('cbet')" id="tab-cbet" class="tab-button active px-8 py-3 rounded-lg font-semibold">
+                    🏥 Equipo Médico (CBET)
+                </button>
+                <button onclick="showTab('cles')" id="tab-cles" class="tab-button px-8 py-3 rounded-lg font-semibold bg-gray-200">
+                    🔬 Laboratorio Clínico (CLES)
+                </button>
+                <button onclick="showTab('cres')" id="tab-cres" class="tab-button px-8 py-3 rounded-lg font-semibold bg-gray-200">
+                    📡 Imaginería Médica (CRES)
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- EQUIPOS CBET -->
+    <section id="cbet" class="tab-content py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                    Equipo Médico General
+                </h2>
+                <p class="text-xl text-gray-600">
+                    Certificación CBET - Biomedical Equipment Technician
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Monitor de Signos Vitales -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimage.jimcdn.com%2Fapp%2Fcms%2Fimage%2Ftransf%2Fnone%2Fpath%2Fs63b59d55c3c0b0ae%2Fbackgroundarea%2Fi3bf1967e9584ba35%2Fversion%2F1538151114%2Fimage.jpg&f=1&nofb=1&ipt=abc9a425368057ac2b548f0d4f0c19b280114327a50182d0d2672a44127625b9?w=800" alt="Monitor de Signos Vitales" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-biomedica-blue mb-3">Monitor de Signos Vitales</h3>
+                        <p class="text-gray-700 mb-4">
+                            Dispositivo que mide y muestra continuamente los parámetros fisiológicos del paciente: ECG, presión arterial, SpO2, frecuencia respiratoria y temperatura.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Unidades de Cuidados Intensivos (UCI)</li>
+                                <li>• Salas de Emergencia</li>
+                                <li>• Quirófanos</li>
+                                <li>• Salas de Recuperación</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Módulo de ECG (electrodos)</li>
+                                <li>• Módulo de presión arterial (NIBP)</li>
+                                <li>• Pulsioxímetro (SpO2)</li>
+                                <li>• Sensor de temperatura</li>
+                                <li>• Pantalla LCD/LED</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=monitor+signos+vitales+tutorial+español" 
+                           target="_blank"
+                           class="block w-full text-center bg-biomedica-blue text-white py-2 rounded-lg hover:bg-biomedica-cyan transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Ventilador Mecánico -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.radioritmo.cl%2Fwp-content%2Fuploads%2F2020%2F07%2FVentilador-mecanico-invasivo-3.jpg&f=1&nofb=1&ipt=952a60568f6365ebc8c0b040fdce2f6ed727f4b24ab5c72317342c380558e17b" alt="Ventilador Mecánico" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-biomedica-blue mb-3">Ventilador Mecánico</h3>
+                        <p class="text-gray-700 mb-4">
+                            Equipo de soporte vital que asiste o reemplaza la respiración espontánea del paciente. Controla volumen, presión, frecuencia respiratoria y concentración de oxígeno.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• UCI - Pacientes Críticos</li>
+                                <li>• Cirugía - Anestesia General</li>
+                                <li>• Emergencias Respiratorias</li>
+                                <li>• Transporte de Pacientes</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Compresor/Turbina</li>
+                                <li>• Mezclador de gases (O2/aire)</li>
+                                <li>• Válvulas inspiratorias/espiratorias</li>
+                                <li>• Sensores de flujo y presión</li>
+                                <li>• Sistema de alarmas</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=ventilador+mecanico+funcionamiento" 
+                           target="_blank"
+                           class="block w-full text-center bg-biomedica-blue text-white py-2 rounded-lg hover:bg-biomedica-cyan transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Desfibrilador/DEA -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.insanexsl.es%2Fwp-content%2Fuploads%2Fdesfibrilador-mindray-beneheart-d6.jpg&f=1&nofb=1&ipt=365ff1a5cc0e87e7d324a1d7d29eed4d1339e10203bf9cab0acea2a4ae041c3e?w=800" alt="Desfibrilador" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-biomedica-blue mb-3">Desfibrilador/DEA</h3>
+                        <p class="text-gray-700 mb-4">
+                            Dispositivo que entrega una descarga eléctrica al corazón para restaurar el ritmo cardíaco normal en casos de fibrilación ventricular o taquicardia ventricular.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Emergencias Cardíacas</li>
+                                <li>• Salas de Emergencia</li>
+                                <li>• Ambulancias</li>
+                                <li>• Espacios Públicos (DEA)</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Capacitor de alta energía</li>
+                                <li>• Palas/electrodos</li>
+                                <li>• Analizador de ritmo cardíaco</li>
+                                <li>• Sistema de carga eléctrica</li>
+                                <li>• Monitor ECG integrado</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=desfibrilador+DEA+uso+capacitacion" 
+                           target="_blank"
+                           class="block w-full text-center bg-biomedica-blue text-white py-2 rounded-lg hover:bg-biomedica-cyan transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Bomba de Infusión -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fautoinfu.com%2Fwp-content%2Fuploads%2F2024%2F01%2FAutoinfu-IV-Infusion-Pump-4-optimized.webp&f=1&nofb=1&ipt=a582caab421ac9069ed36aafc89eb7fb6588b5e994086b2e68957468900d3987?w=800" alt="Bomba de Infusión" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-biomedica-blue mb-3">Bomba de Infusión</h3>
+                        <p class="text-gray-700 mb-4">
+                            Dispositivo electromecánico que administra fluidos, medicamentos y nutrientes de forma controlada y precisa al paciente en volúmenes y velocidades específicas.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Quimioterapia</li>
+                                <li>• Antibióticos IV</li>
+                                <li>• Nutrición Parenteral</li>
+                                <li>• Analgesia Controlada (PCA)</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Motor de bombeo (peristáltico)</li>
+                                <li>• Sensor de goteo/flujo</li>
+                                <li>• Detector de aire</li>
+                                <li>• Sistema de alarmas</li>
+                                <li>• Interfaz de programación</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=bomba+infusion+programacion+mantenimiento" 
+                           target="_blank"
+                           class="block w-full text-center bg-biomedica-blue text-white py-2 rounded-lg hover:bg-biomedica-cyan transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Electrocardiógrafo (ECG) -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%2Fid%2FOIP.IqOBJql9D5D7kxlVxsjnlAHaE9%3Fcb%3Ducfimgc2%26pid%3DApi&f=1&ipt=6169da4a8f85b32178284ae6bf046548a7cbcb92aaf51d1ff4ce943973d52ca3?w=800" alt="Electrocardiógrafo" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-biomedica-blue mb-3">Electrocardiógrafo (ECG)</h3>
+                        <p class="text-gray-700 mb-4">
+                            Equipo que registra la actividad eléctrica del corazón mediante electrodos colocados en el cuerpo, generando un trazado gráfico para diagnóstico cardíaco.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Diagnóstico de Arritmias</li>
+                                <li>• Detección de Infartos</li>
+                                <li>• Chequeos Preoperatorios</li>
+                                <li>• Consulta Cardiológica</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Cable de 10 derivaciones</li>
+                                <li>• Electrodos (4 extremidades + 6 precordiales)</li>
+                                <li>• Amplificador de señal</li>
+                                <li>• Impresora térmica</li>
+                                <li>• Software de interpretación</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=electrocardiograma+ECG+interpretacion" 
+                           target="_blank"
+                           class="block w-full text-center bg-biomedica-blue text-white py-2 rounded-lg hover:bg-biomedica-cyan transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                        -->
+                    </div>
+                </div>
+
+                <!-- Autoclave -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.rodwell-autoclave.com%2Fwp-content%2Fuploads%2F2020%2F02%2FDepositphotos_320300328_l-2015.jpg&f=1&nofb=1&ipt=3ae0a45efe6e3bce1206cef110b7fa280970e61b5e0ecb182593d563bfdc8bf4?w=800" alt="Autoclave" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-biomedica-blue mb-3">Autoclave</h3>
+                        <p class="text-gray-700 mb-4">
+                            Equipo que esteriliza instrumental médico mediante vapor saturado a alta presión y temperatura, eliminando todos los microorganismos incluidas las esporas.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Esterilización de Instrumental Quirúrgico</li>
+                                <li>• Material de Laboratorio</li>
+                                <li>• Textiles Médicos</li>
+                                <li>• Control de Infecciones</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Cámara de presión</li>
+                                <li>• Generador de vapor</li>
+                                <li>• Válvulas de seguridad</li>
+                                <li>• Sensores de temperatura/presión</li>
+                                <li>• Sistema de vacío</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=autoclave+esterilizacion+mantenimiento" 
+                           target="_blank"
+                           class="block w-full text-center bg-biomedica-blue text-white py-2 rounded-lg hover:bg-biomedica-cyan transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- EQUIPOS CLES -->
+    <section id="cles" class="tab-content hidden py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                    Equipos de Laboratorio Clínico
+                </h2>
+                <p class="text-xl text-gray-600">
+                    Certificación CLES - Laboratory Equipment Specialist
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Analizador Hematológico -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fivdsolucionesintegrales.com%2Fwp-content%2Fuploads%2F2022%2F03%2FIVD_Soluciones_Integrales_BC_6000.jpg&f=1&nofb=1&ipt=c200d7243da428e6f4be3cb2e79d3bc5843c6cc6e0ed69223e83bb82eded87b0?w=800" alt="Analizador Hematológico" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-purple-700 mb-3">Analizador Hematológico</h3>
+                        <p class="text-gray-700 mb-4">
+                            Equipo automatizado que realiza el conteo y análisis de células sanguíneas: glóbulos rojos, blancos, plaquetas y hemoglobina. Proporciona el hemograma completo (CBC).
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Diagnóstico de Anemias</li>
+                                <li>• Detección de Infecciones</li>
+                                <li>• Monitoreo de Tratamientos</li>
+                                <li>• Estudios Preoperatorios</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Sistema de aspiración</li>
+                                <li>• Cámara de conteo</li>
+                                <li>• Detectores ópticos y eléctricos</li>
+                                <li>• Sistema de dilución</li>
+                                <li>• Software de análisis</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=analizador+hematologico+funcionamiento" 
+                           target="_blank"
+                           class="block w-full text-center bg-purple-700 text-white py-2 rounded-lg hover:bg-purple-600 transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                        -->
+                    </div>
+                </div>
+
+                <!-- Analizador de Química Clínica -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.akralab.es%2Fwp-content%2Fuploads%2F2018%2F10%2FBA400-detalle-analizador-bioquimica.jpg&f=1&nofb=1&ipt=ba4679a60917420b33e42f60048820ef60490c92d190b73658c18a710ef65883?w=800" alt="Analizador Química Clínica" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-purple-700 mb-3">Analizador de Química Clínica</h3>
+                        <p class="text-gray-700 mb-4">
+                            Sistema automatizado que realiza pruebas bioquímicas en muestras de sangre y otros fluidos corporales: glucosa, colesterol, enzimas, electrolitos.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Perfil Metabólico</li>
+                                <li>• Función Hepática y Renal</li>
+                                <li>• Control de Diabetes</li>
+                                <li>• Perfil Lipídico</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Sistema de pipeteo automatizado</li>
+                                <li>• Fotómetro/Espectrofotómetro</li>
+                                <li>• Incubador de reacciones</li>
+                                <li>• Sistema de lavado</li>
+                                <li>• Lector óptico</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=analizador+quimica+clinica+laboratorio" 
+                           target="_blank"
+                           class="block w-full text-center bg-purple-700 text-white py-2 rounded-lg hover:bg-purple-600 transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Centrífuga -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.cromtek.cl%2Fwp-content%2Fuploads%2F2023%2F02%2F1-6-1030x496.jpg&f=1&nofb=1&ipt=48076f7ca160b82215305c5ec0de85fee46e7da1f4512488be95e74dca66b6cb?w=800" alt="Centrífuga" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-purple-700 mb-3">Centrífuga de Laboratorio</h3>
+                        <p class="text-gray-700 mb-4">
+                            Equipo que separa componentes de una mezcla mediante rotación a alta velocidad, utilizando la fuerza centrífuga para separar sustancias por densidad.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Separación de Suero/Plasma</li>
+                                <li>• Análisis de Orina</li>
+                                <li>• Preparación de Muestras</li>
+                                <li>• Cultivos Celulares</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Motor de alta velocidad</li>
+                                <li>• Rotor (ángulo fijo o basculante)</li>
+                                <li>• Sistema de balanceo</li>
+                                <li>• Tapa de seguridad</li>
+                                <li>• Control de velocidad/tiempo</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=centrifuga+laboratorio+uso+mantenimiento" 
+                           target="_blank"
+                           class="block w-full text-center bg-purple-700 text-white py-2 rounded-lg hover:bg-purple-600 transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Microscopio -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmicroscopiodelaboratorio.com.mx%2Fimages%2Fprime%2FVE-B300PAD.png&f=1&nofb=1&ipt=404d963daeae12ac8a4ebdaeb75b86cdc5b6e2dd3e4b7f2f74beffc0f169ec46?w=800" alt="Microscopio" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-purple-700 mb-3">Microscopio de Laboratorio</h3>
+                        <p class="text-gray-700 mb-4">
+                            Instrumento óptico que amplifica imágenes de objetos pequeños mediante un sistema de lentes, permitiendo el estudio de células, microorganismos y tejidos.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Análisis Microscópico de Sangre</li>
+                                <li>• Identificación de Bacterias</li>
+                                <li>• Examen de Orina</li>
+                                <li>• Citología y Patología</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Objetivos (4x, 10x, 40x, 100x)</li>
+                                <li>• Oculares (10x o 15x)</li>
+                                <li>• Sistema de iluminación LED/halógeno</li>
+                                <li>• Condensador</li>
+                                <li>• Platina mecánica</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=microscopio+laboratorio+uso+mantenimiento" 
+                           target="_blank"
+                           class="block w-full text-center bg-purple-700 text-white py-2 rounded-lg hover:bg-purple-600 transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Analizador de Urianálisis -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdesego.com%2Fwp-content%2Fuploads%2F2024%2F07%2FUS1-2-1.png&f=1&nofb=1&ipt=08e985d9cba2d3b089473a4585783a952920e571fa843f5f630b753fd86c731d?w=800" alt="Analizador Urianálisis" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-purple-700 mb-3">Analizador de Urianálisis</h3>
+                        <p class="text-gray-700 mb-4">
+                            Equipo automatizado que realiza análisis físico, químico y microscópico de orina mediante tiras reactivas y lectura óptica automatizada.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Detección de Infecciones Urinarias</li>
+                                <li>• Evaluación de Función Renal</li>
+                                <li>• Diabetes y Glucosuria</li>
+                                <li>• Chequeos de Rutina</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Lector óptico de tiras</li>
+                                <li>• Sistema de transporte de tiras</li>
+                                <li>• Fuente de luz LED</li>
+                                <li>• Software de análisis</li>
+                                <li>• Impresora de resultados</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=analizador+urianalisis+laboratorio" 
+                           target="_blank"
+                           class="block w-full text-center bg-purple-700 text-white py-2 rounded-lg hover:bg-purple-600 transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Incubadora -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.cromtek.cl%2Fwp-content%2Fuploads%2F2019%2F04%2Fshakers-Incubadores-495x400.jpg&f=1&nofb=1&ipt=032f48b2c1069f4db4d52889f3dfad2176f5f5596a5ae650faeef49e0e2209be?w=800" alt="Incubadora" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-purple-700 mb-3">Incubadora de Laboratorio</h3>
+                        <p class="text-gray-700 mb-4">
+                            Equipo que mantiene condiciones ambientales controladas (temperatura, humedad, CO2) para el crecimiento de cultivos bacteriológicos, celulares y microbiológicos.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Cultivos Bacteriológicos</li>
+                                <li>• Microbiología Clínica</li>
+                                <li>• Cultivos Celulares</li>
+                                <li>• Pruebas de Sensibilidad</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Cámara térmica aislada</li>
+                                <li>• Sistema de calentamiento</li>
+                                <li>• Controlador de temperatura</li>
+                                <li>• Sensor de humedad (opcional)</li>
+                                <li>• Sistema de CO2 (opcional)</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=incubadora+laboratorio+microbiologia" 
+                           target="_blank"
+                           class="block w-full text-center bg-purple-700 text-white py-2 rounded-lg hover:bg-purple-600 transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- EQUIPOS CRES -->
+    <section id="cres" class="tab-content hidden py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                    Equipos de Imaginería Médica
+                </h2>
+                <p class="text-xl text-gray-600">
+                    Certificación CRES - Radiology Equipment Specialist
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Rayos X -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.allmedica.cl%2Fwp-content%2Fuploads%2F2021%2F04%2Frayos-convencional-drgem.jpg&f=1&nofb=1&ipt=8ab62469b2862a104839a9f9854ac5b64f24ff7d9d28d716e50ef708908d1b5d?w=800" alt="Equipo Rayos X" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-orange-600 mb-3">Equipo de Rayos X</h3>
+                        <p class="text-gray-700 mb-4">
+                            Sistema de diagnóstico por imagen que utiliza radiación ionizante para crear imágenes del interior del cuerpo, especialmente huesos y estructuras densas.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Fracturas Óseas</li>
+                                <li>• Radiografías de Tórax</li>
+                                <li>• Estudios Dentales</li>
+                                <li>• Detección de Cuerpos Extraños</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Tubo de rayos X (cátodo y ánodo)</li>
+                                <li>• Generador de alta tensión</li>
+                                <li>• Colimador</li>
+                                <li>• Detector digital o cassette</li>
+                                <li>• Mesa radiográfica</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=rayos+x+radiologia+funcionamiento" 
+                           target="_blank"
+                           class="block w-full text-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-500 transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Tomógrafo CT -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftienda.llm.cl%2Fwp-content%2Fuploads%2F2025%2F05%2FScintCare-CT-16-2.png&f=1&nofb=1&ipt=2a96470930cd13f86e33d565f4ee1fa3e1d83a69d538f705135b7d10291d723b?w=800" alt="Tomógrafo CT" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-orange-600 mb-3">Tomógrafo Computarizado (CT)</h3>
+                        <p class="text-gray-700 mb-4">
+                            Sistema avanzado que utiliza rayos X y procesamiento computarizado para crear imágenes transversales detalladas en 3D del cuerpo.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Traumatismos y Emergencias</li>
+                                <li>• Diagnóstico de Cáncer</li>
+                                <li>• Estudios Cerebrales</li>
+                                <li>• Angiografías</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Gantry rotatorio</li>
+                                <li>• Tubo de rayos X</li>
+                                <li>• Detectores multicanal</li>
+                                <li>• Mesa deslizante motorizada</li>
+                                <li>• Computadora de reconstrucción</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=tomografia+computarizada+CT+funcionamiento" 
+                           target="_blank"
+                           class="block w-full text-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-500 transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Ultrasonido -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://www.eleinmsa.com/wp-content/uploads/2022/04/Arietta-750.jpg?w=800" alt="Ultrasonido" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-orange-600 mb-3">Ultrasonido (Ecógrafo)</h3>
+                        <p class="text-gray-700 mb-4">
+                            Sistema de diagnóstico por imagen que utiliza ondas sonoras de alta frecuencia para crear imágenes en tiempo real de órganos y tejidos blandos.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Obstetricia (embarazo)</li>
+                                <li>• Estudios Abdominales</li>
+                                <li>• Ecocardiografía</li>
+                                <li>• Estudios Vasculares</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Transductores (sondas)</li>
+                                <li>• Generador de pulsos</li>
+                                <li>• Procesador de imágenes</li>
+                                <li>• Monitor de alta resolución</li>
+                                <li>• Sistema Doppler (opcional)</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=ultrasonido+ecografia+funcionamiento" 
+                           target="_blank"
+                           class="block w-full text-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-500 transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Resonancia Magnética -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.F8RQvu4EJXRmfo3f0OL-eAHaEK%3Fpid%3DApi%26ucfimg%3D1&f=1&ipt=ce45126c40dd010d4edc2d7ad983c987426dd76b4d91af1e85394f6a67a61425?w=800" alt="Resonancia Magnética" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-orange-600 mb-3">Resonancia Magnética (MRI)</h3>
+                        <p class="text-gray-700 mb-4">
+                            Tecnología avanzada que utiliza campos magnéticos potentes y ondas de radio para generar imágenes detalladas de órganos y tejidos blandos sin radiación.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Estudios Neurológicos (cerebro, médula)</li>
+                                <li>• Lesiones de Tejidos Blandos</li>
+                                <li>• Estudios Musculoesqueléticos</li>
+                                <li>• Diagnóstico de Tumores</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Imán superconductor</li>
+                                <li>• Bobinas de gradiente</li>
+                                <li>• Bobinas de radiofrecuencia</li>
+                                <li>• Sistema de enfriamiento (helio)</li>
+                                <li>• Computadora de reconstrucción</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=resonancia+magnetica+MRI+funcionamiento" 
+                           target="_blank"
+                           class="block w-full text-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-500 transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Mamógrafo -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdigitalxray.pe%2Fwp-content%2Fuploads%2F2023%2F05%2FDrTechAIDA.png&f=1&nofb=1&ipt=c0ac14bd48108b8273b0cc35377619970626a9907e7dab2435e9324a8680f6b4?w=800" alt="Mamógrafo" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-orange-600 mb-3">Mamógrafo</h3>
+                        <p class="text-gray-700 mb-4">
+                            Equipo especializado de rayos X diseñado específicamente para obtener imágenes detalladas del tejido mamario para detección temprana de cáncer de mama.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Detección de Cáncer de Mama</li>
+                                <li>• Mamografías de Screening</li>
+                                <li>• Estudios Diagnósticos</li>
+                                <li>• Guía para Biopsias</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Tubo de rayos X especializado</li>
+                                <li>• Sistema de compresión</li>
+                                <li>• Detector digital</li>
+                                <li>• Brazo en C móvil</li>
+                                <li>• Software de procesamiento</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=mamografia+mamografo+funcionamiento" 
+                           target="_blank"
+                           class="block w-full text-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-500 transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+                <!-- Fluoroscopio -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover animate-on-scroll">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.lbAt2sbZnF5_C7F8gM5PBgHaFO%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=7673b6fee69720aee9a5323929e0a6dfa410e7589b3f376cc3ad5887185f2d6c&ipo=images?w=800" alt="Fluoroscopio" class="equipment-img">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-orange-600 mb-3">Fluoroscopio</h3>
+                        <p class="text-gray-700 mb-4">
+                            Sistema de imagen en tiempo real que utiliza rayos X continuos para visualizar estructuras internas en movimiento, guiando procedimientos médicos.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Aplicaciones:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Estudios Gastrointestinales</li>
+                                <li>• Guía de Cateterismos</li>
+                                <li>• Procedimientos Ortopédicos</li>
+                                <li>• Angiografías</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">Componentes Principales:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Tubo de rayos X</li>
+                                <li>• Intensificador de imagen</li>
+                                <li>• Mesa radiográfica basculante</li>
+                                <li>• Monitor de visualización</li>
+                                <li>• Sistema de grabación</li>
+                            </ul>
+                        </div>
+                        <!--
+                        <a href="https://www.youtube.com/results?search_query=fluoroscopia+fluoroscopio+radiologia" 
+                           target="_blank"
+                           class="block w-full text-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-500 transition">
+                            📺 Ver Videos Educativos
+                        </a>
+                    -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Información Adicional -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">
+                    ¿Por qué es importante conocer estos equipos?
+                </h2>
+                <p class="text-lg text-gray-700 mb-8">
+                    Como técnico en ingeniería biomédica, serás responsable del mantenimiento preventivo, 
+                    reparación y calibración de estos equipos. Conocer su funcionamiento, componentes y 
+                    aplicaciones clínicas es esencial para garantizar la seguridad de los pacientes y la 
+                    calidad de la atención médica.
+                </p>
+                <div class="grid md:grid-cols-3 gap-6 mt-12">
+                    <div class="p-6 bg-blue-50 rounded-xl">
+                        <div class="text-4xl mb-3">🔧</div>
+                        <h3 class="font-bold text-lg mb-2">Mantenimiento</h3>
+                        <p class="text-sm text-gray-600">Preventivo, correctivo y predictivo de equipos médicos</p>
+                    </div>
+                    <div class="p-6 bg-purple-50 rounded-xl">
+                        <div class="text-4xl mb-3">⚡</div>
+                        <h3 class="font-bold text-lg mb-2">Diagnóstico</h3>
+                        <p class="text-sm text-gray-600">Identificación y solución de fallas técnicas</p>
+                    </div>
+                    <div class="p-6 bg-orange-50 rounded-xl">
+                        <div class="text-4xl mb-3">📊</div>
+                        <h3 class="font-bold text-lg mb-2">Calibración</h3>
+                        <p class="text-sm text-gray-600">Verificación de precisión y ajustes de parámetros</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Llamado a la Acción -->
+    <section class="gradient-bg text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                ¿Te interesa el Programa?
+            </h2>
+            <p class="text-xl mb-8 text-gray-100 max-w-2xl mx-auto">
+                Solicita más información sobre el programa de Tecnología en Ingeniería Biomédica
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=3ZB1RzlNWEel1FFMLk1fgEuQuz7pp7BKjaFIRES12ltUOUZaVEEwSVlSTkRYREo4SFBLMURMQk40QS4u" 
+                   target="_blank"
+                   class="bg-white text-biomedica-blue px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-lg inline-flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Solicita Información
+                </a>
+                <a href="index.html" 
+                   class="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-biomedica-blue transition inline-flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4">Tecnología en Ingeniería Biomédica</h3>
+                    <p class="text-sm">
+                        Formando profesionales dedicados y comprometidos con la excelencia 
+                        en el campo de la tecnología aplicada a la salud.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4">Certificaciones</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>• CBET - Biomedical Equipment Technician</li>
+                        <li>• CLES - Laboratory Equipment Specialist</li>
+                        <li>• CRES - Radiology Equipment Specialist</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4">Contacto</h3>
+                    <p class="text-sm mb-2">Prof. Felipe Hernández</p>
+                    <p class="text-sm">hernandezgf@itec.pr</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-sm">
+                <!--<p>&copy; 2024 Tecnología en Ingeniería Biomédica. Todos los derechos reservados.</p>-->
+                <p class="mt-2 text-gray-500">Instituto Tecnológico de Puerto Rico - San Juan</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTop" class="fixed bottom-8 right-8 bg-biomedica-blue text-white p-4 rounded-full shadow-lg hover:bg-biomedica-cyan transition opacity-0 invisible z-50">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+        </svg>
+    </button>
+
+    <script>
+        // Mobile menu functionality
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const menuIconOpen = document.getElementById('menu-icon-open');
+        const menuIconClose = document.getElementById('menu-icon-close');
+        const menuLinks = document.querySelectorAll('.mobile-menu-link');
+
+        const toggleMenu = () => {
+            menu.classList.toggle('hidden');
+            menuIconOpen.classList.toggle('hidden');
+            menuIconClose.classList.toggle('hidden');
+            document.body.classList.toggle('mobile-menu-open');
+        };
+
+        if (menuBtn) {
+            menuBtn.addEventListener('click', toggleMenu);
+        }
+        
+        menuLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // Tab functionality
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('bg-gray-200');
+            });
+            
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            const activeBtn = document.getElementById('tab-' + tabId);
+            activeBtn.classList.add('active');
+            activeBtn.classList.remove('bg-gray-200');
+            
+            document.getElementById(tabId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        const scrollTop = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.remove('opacity-0', 'invisible');
+                scrollTop.classList.add('opacity-100', 'visible');
+            } else {
+                scrollTop.classList.add('opacity-0', 'invisible');
+                scrollTop.classList.remove('opacity-100', 'visible');
+            }
+        });
+
+        scrollTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(element => {
+            observer.observe(element);
+        });
+    </script>
+</body>
+</html>
